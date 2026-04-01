@@ -3,9 +3,6 @@ Nivel 8: Orquestación del Pipeline Completo
 Este módulo contiene la función principal para evaluar expresiones aritméticas de números romanos.
 """
 
-from calculadora.conversor import romano_a_entero
-from calculadora.error import ExpresionInvalida
-from calculadora.parser import evaluar_expresion as parsear_expresion
 
 
 def evaluar(expresion: str) -> int:

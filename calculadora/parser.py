@@ -5,8 +5,6 @@ Este módulo contiene las funciones para parsear expresiones aritméticas con n�
 
 from dataclasses import dataclass
 
-from calculadora.error import ExpresionInvalida
-
 
 @dataclass
 class Token:

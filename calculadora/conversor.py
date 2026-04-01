@@ -3,14 +3,6 @@ Nivel 6: Generación de Código - Conversión de Romano a Entero
 Este módulo contiene la función para convertir números romanos a enteros.
 """
 
-from calculadora.error import ExpresionInvalida
-from calculadora.validaciones import (
-    validar_orden_descendente,
-    validar_repeticiones_icxm,
-    validar_repeticiones_vld,
-    validar_restas,
-)
-from calculadora.validaciones.alfabeto import validar_simbolos
 
 
 def romano_a_entero(cadena: str) -> int:
