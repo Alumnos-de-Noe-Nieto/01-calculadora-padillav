@@ -6,8 +6,36 @@ Excepción: las 6 formas sustractivas válidas.
 Ejemplos válidos: XVI, MDCLXVI, XIV (sustracción válida)
 Ejemplos inválidos: IVX, IIV, VIV
 """
+VALORES = {
+    'I': 1, 'V': 5, 'X': 10, 'L': 50,
+    'C': 100, 'D': 500, 'M': 1000
+}
+SUSTRACCIONES_VALIDAS = {'IV', 'IX', 'XL', 'XC', 'CD', 'CM'}
 
 def validar_orden_descendente(cadena: str) -> bool:
+    cadena = cadena.strip()
+    if not cadena:
+        return False
+
+    i = 0
+    while i < len(cadena):
+
+        if i + 1 < len(cadena) and cadena[i:i+2] in SUSTRACCIONES_VALIDAS:
+
+            if i > 0 and cadena[i-1] == cadena[i]:
+                return False
+
+            if i + 2 < len(cadena) and VALORES[cadena[i+2]] >= VALORES[cadena[i]]:
+                return False
+
+            i += 2
+            continue
+
+        if i + 1 < len(cadena) and VALORES[cadena[i]] < VALORES[cadena[i+1]]:
+            return False
+        i += 1
+    return True
+
     """
     Valida que los símbolos estén en orden descendente de valor (izquierda a derecha).
 
