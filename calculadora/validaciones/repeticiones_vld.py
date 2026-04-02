@@ -7,6 +7,17 @@ Ejemplos inválidos: VV, LL, DD
 """
 
 def validar_repeticiones_vld(cadena: str) -> bool:
+
+    cadena = cadena.strip()
+
+    invalido = ["VV", "LL", "DD"]
+
+    for repetido in invalido:
+        if repetido in cadena:
+            return False
+
+    return all(patron not in cadena for patron in invalido)
+
     """
     Valida que los símbolos V, L y D no se repitan (máximo 1).
 

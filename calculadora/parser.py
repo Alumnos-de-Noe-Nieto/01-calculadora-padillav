@@ -2,7 +2,6 @@
 Nivel 7: Parsing de Expresiones
 Este módulo contiene las funciones para parsear expresiones aritméticas con números romanos.
 """
-
 from dataclasses import dataclass
 
 from calculadora.error import ExpresionInvalida
@@ -25,6 +24,20 @@ class Token:
 
 
 def evaluar_expresion(expresion: str) -> list[Token]:
+    if not expresion.strip():
+        return []
+
+    try:
+        tokens = tokenizar_expresion(expresion)
+
+        if not validar_estructura_tokens(tokens):
+            raise ExpresionInvalida(f'La expresión "{expresion}" tiene una estructura inválida')
+
+        return tokens
+
+    except ExpresionInvalida:
+        raise
+
     """
     Tokeniza y valida una expresión aritmética de números romanos.
 
@@ -56,6 +69,35 @@ def evaluar_expresion(expresion: str) -> list[Token]:
 
 
 def tokenizar_expresion(expresion: str) -> list[Token]:
+
+    tokens = []
+    i = 0
+    alfabeto_romano = "IVXLCDM"
+
+    while i < len(expresion):
+        char = expresion[i]
+
+        if char == ' ':
+            tokens.append(Token("ESPACIO", " ", i))
+            i += 1
+        elif char == '+':
+            tokens.append(Token("SUMA", "+", i))
+            i += 1
+        elif char == '-':
+            tokens.append(Token("RESTA", "-", i))
+            i += 1
+        elif char in alfabeto_romano:
+            inicio = i
+
+            while i < len(expresion) and expresion[i] in alfabeto_romano:
+                i += 1
+            tokens.append(Token("ROMANO", expresion[inicio:i], inicio))
+        else:
+            from calculadora.error import ExpresionInvalida
+            raise ExpresionInvalida(f"Carácter inválido '{char}' en posición {i}")
+
+    return tokens
+
     """
     Tokeniza una expresión de texto en una lista de tokens.
 
@@ -99,6 +141,24 @@ def tokenizar_expresion(expresion: str) -> list[Token]:
 
 
 def validar_estructura_tokens(tokens: list[Token]) -> bool:
+
+    sin_espacios = [t for t in tokens if t.tipo != 'ESPACIO']
+
+    if not sin_espacios:
+        return True
+    if len(sin_espacios) < 3 or len(sin_espacios) % 2 == 0:
+        return False
+
+    for i, token in enumerate(sin_espacios):
+        if i % 2 == 0:
+            if token.tipo != "ROMANO":
+                return False
+        else:
+            if token.tipo not in ("SUMA", "RESTA"):
+                return False
+
+    return True
+
     """
     Valida que la expresión tenga una estructura válida.
 
